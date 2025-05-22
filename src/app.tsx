@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { createContext, use, useMemo, useState } from 'react';
 
 import './app.css';
 
+type TSidebarContextValue = { toggle: () => void };
+
+const SidebarContext = createContext<TSidebarContextValue | null>(null)
+
 function Topbar() {
-  return <div className="topbar">top bar</div>;
+  const sidebar = use(SidebarContext)
+  return <div className="topbar"><button onClick={() => sidebar?.toggle()}>toggle</button></div>;
 }
 
 function Sidebar() {
@@ -19,12 +24,22 @@ function Panel() {
 }
 
 export function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+
+  const value: TSidebarContextValue = useMemo(() => {
+    return {
+      toggle: () => setIsSidebarOpen(value => !value)
+    }
+  }, []);
+
   return (
-    <div className="grid">
+    <div className={`grid ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+      <SidebarContext.Provider value={value}>
       <Topbar />
-      <Sidebar />
+      {isSidebarOpen ? <Sidebar /> : null}
       <Main />
       <Panel />
+      </SidebarContext.Provider>
     </div>
   );
 }
