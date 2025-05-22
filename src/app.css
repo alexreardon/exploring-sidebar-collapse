@@ -1,0 +1,29 @@
+.grid {
+  display: grid;
+  grid-template-columns: 150px 1fr 150px;
+  grid-template-rows: 40px 1fr;
+  grid-template-areas:
+    'topbar topbar topbar'
+    'sidebar main panel';
+  height: 100vh;
+}
+
+.topbar {
+  background-color: lightblue;
+  grid-area: topbar;
+}
+
+.sidebar {
+  background-color: lightgreen;
+  grid-area: sidebar;
+}
+
+.main {
+  grid-area: main;
+  background-color: lightpink;
+}
+
+.panel {
+  grid-area: panel;
+  background-color: coral;
+}
